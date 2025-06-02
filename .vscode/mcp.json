@@ -1,0 +1,12 @@
+{
+    "servers": {
+        "mcp-stuff": {
+            "type": "stdio",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "/Users/swacblooms/RiderProjects/MCPServer/MCPServer/Program.cs"
+            ]
+        }
+    }
+}
