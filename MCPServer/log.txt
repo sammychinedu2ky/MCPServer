@@ -1,0 +1,3 @@
+swacky
+[06:47:32] [RECV] {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{"roots":{"listChanged":true},"sampling":{}},"clientInfo":{"name":"Visual Studio Code - Insiders","version":"1.101.0-insider"}}}
+swacky
