@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 
-var input = args;
-var filePath = "/Users/swacblooms/RiderProjects/MCPServer/MCPServer/log.txt";
+
 while (true)
 {
     var request = Console.ReadLine();
@@ -74,9 +73,6 @@ Dictionary<string, object> ReturnInitializeResponse()
         ["protocolVersion"] = "2024-11-05",
         ["capabilities"] = new Dictionary<string, object>
         {
-            ["logging"] = new Dictionary<string, object>(),
-            ["prompts"] = new Dictionary<string, object>(),
-            ["resources"] = new Dictionary<string, object>(),
             ["tools"] = new Dictionary<string, object>
             {
                 ["listChanged"] = true
@@ -114,15 +110,15 @@ string FinalResponse(Dictionary<string, object> body, Request deserializedReques
 
 public class Request
 {
-    public string Jsonrpc { get; set; }
+    public required string Jsonrpc { get; set; }
     public int Id { get; set; }
-    public string Method { get; set; }
+    public required string Method { get; set; }
     public Dictionary<string, JsonElement>? Params { get; set; }
 }
 
 public class Response
 {
-    public string Jsonrpc { get; set; }
+    public required string Jsonrpc { get; set; }
     public int Id { get; set; }
     public IDictionary<string, object>? Result { get; set; }
     public Error? Error { get; set; }
@@ -131,7 +127,7 @@ public class Response
 public class Error
 {
     public ErrorCode Code { get; set; }
-    public string Message { get; set; }
+    public string? Message { get; set; }
     public string? Data { get; set; }
 }
 
@@ -151,25 +147,23 @@ public class MyTools
     {
         var quote = QuoteGenerator.GetQuoteForTime(hour);
 
-        return new List<Dictionary<string, string>>
-        {
-            new Dictionary<string, string>
-            {
-                { "type", "text" },
-                { "text", quote }
-            }
-        };
+        return ReturnResponse(quote);
     }
 
     [Tool("say_hello", "Say hello to someone")]
     public List<Dictionary<string, string>> SayHello(string name)
+    {
+        return ReturnResponse($"Hello, {name}!");
+    }
+
+    private List<Dictionary<string, string>> ReturnResponse(string text)
     {
         return new List<Dictionary<string, string>>
         {
             new Dictionary<string, string>
             {
                 { "type", "text" },
-                { "text", $"Hello, {name}!" }
+                { "text", text }
             }
         };
     }
