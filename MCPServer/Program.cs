@@ -30,7 +30,6 @@ while (true)
             _ => new Dictionary<string, object>(),
         };
         var output = FinalResponse(handler, deserializedRequest);
-        output = output.Replace("\r", "").Replace("\n", "");
         Console.WriteLine(output);
 
     }
@@ -100,7 +99,7 @@ string FinalResponse(Dictionary<string, object> body, Request deserializedReques
     var options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = true,
+        WriteIndented = false,
     };
 
     var response = new Response
