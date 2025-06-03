@@ -121,7 +121,7 @@ public class Response
 
 public class MyTools
 {
-    [Tool("get_time_based_quotes_based", "Get a quote based on the hour of day")]
+    [Tool("get_time_based_quotes", "Get a quote based on the hour of day")]
     public List<Dictionary<string, string>> GetTimeBasedQuote(int hour)
     {
         var quote = QuoteGenerator.GetQuoteForTime(hour);
