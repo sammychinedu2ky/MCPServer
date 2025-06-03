@@ -20,7 +20,6 @@ while (true)
             continue;
         }
         var method = deserializedRequest.Method;
-        Console.Error.WriteLine("entering handlers");
         Dictionary<string, object> handler = method switch
         {
             "initialize" => ReturnInitializeResponse(),
@@ -90,8 +89,6 @@ Dictionary<string, object> ReturnInitializeResponse()
 
 string FinalResponse(Dictionary<string, object> body, Request deserializedRequest)
 {
-    Console.Error.WriteLine("making final response");
-    Console.Error.WriteLine($"Response body: {JsonSerializer.Serialize(body)}");
     var options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -102,8 +99,7 @@ string FinalResponse(Dictionary<string, object> body, Request deserializedReques
     {
         Jsonrpc = "2.0",
         Id = deserializedRequest.Id,
-        Result = body,
-        Error = null
+        Result = body
     };
     return JsonSerializer.Serialize(response, options);
 }
@@ -121,23 +117,6 @@ public class Response
     public required string Jsonrpc { get; set; }
     public int Id { get; set; }
     public IDictionary<string, object>? Result { get; set; }
-    public Error? Error { get; set; }
-}
-
-public class Error
-{
-    public ErrorCode Code { get; set; }
-    public string? Message { get; set; }
-    public string? Data { get; set; }
-}
-
-public enum ErrorCode
-{
-    ParseError = -32700,
-    InvalidRequest = -32600,
-    MethodNotFound = -32601,
-    InvalidParams = -32602,
-    InternalError = -32603
 }
 
 public class MyTools
@@ -312,7 +291,6 @@ public static class ToolInvoker
     {
         if (request.Params == null)
             throw new ArgumentException("Params cannot be null.");
-        Console.Error.WriteLine($"Params: {JsonSerializer.Serialize(request.Params)}");
         if (!request.Params.TryGetValue("name", out var nameObj) || nameObj.ValueKind != JsonValueKind.String)
             throw new ArgumentException("Missing or invalid 'name' parameter.");
         var toolName = nameObj.GetString();
